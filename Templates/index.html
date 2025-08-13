@@ -4,99 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D_Pro Image Resizer</title>
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    <!-- Custom Styles -->
     <style>
-        html {
-            scroll-behavior: smooth; /* Enables smooth scrolling for page jumps */
-        }
-        body {
-            background-color: #f8f9fa;
-        }
-        .upload-area {
-            border: 2px dashed #0d6efd;
-            border-radius: 10px;
-            padding: 4rem;
-            text-align: center;
-            cursor: pointer;
-            background-color: #ffffff;
-            transition: background-color 0.2s;
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .upload-area:hover {
-            background-color: #e9ecef;
-        }
-        .options-card {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .feature-icon {
-            font-size: 3rem;
-            color: #0d6efd;
-        }
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8f9fa; }
+        .upload-area { border: 2px dashed #0d6efd; border-radius: 10px; padding: 4rem; text-align: center; cursor: pointer; background-color: #ffffff; transition: background-color 0.2s; min-height: 280px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .upload-area:hover { background-color: #e9ecef; }
+        .options-card { background-color: #ffffff; border-radius: 10px; padding: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .feature-icon { font-size: 3rem; color: #0d6efd; }
     </style>
 </head>
 <body>
-    <!-- =================== HEADER / NAVBAR (UPDATED) =================== -->
-    <nav class="navbar navbar-dark bg-primary navbar-expand-sm">
+    <!-- HEADER IS NOW COMPLETE AND CORRECTED -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#">D_Pro Image Tool</a>
-            <div class="ms-auto">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
+            <a class="navbar-brand fw-bold" href="/">D_Pro Image Tool</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="main-nav">
+                <ul class="navbar-nav ms-auto">
+                    <!-- Resize Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Resize</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/?tool=resizer">Image Resizer</a></li>
+                            <li><a class="dropdown-item" href="#">Bulk Resize</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/?tool=resizer&format=png">Resize PNG</a></li>
+                            <li><a class="dropdown-item" href="/?tool=resizer&format=jpeg">Resize JPG</a></li>
+                            <li><a class="dropdown-item" href="/?tool=resizer&format=webp">Resize WebP</a></li>
+                        </ul>
+                    </li>
+                    <!-- Crop Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Crop</a>
+                            <ul class="dropdown-menu">
+                            <!-- THIS LINK IS NOW UPDATED -->
+                            <li><a class="dropdown-item" href="/crop">Crop Image</a></li> 
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Crop PNG</a></li>
+                            <li><a class="dropdown-item" href="#">Crop JPG</a></li>
+                            <li><a class="dropdown-item" href="#">Crop WebP</a></li>
+                        </ul>
+                    </li>
+                    <!-- Compress Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Compress</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/?tool=compressor">Image Compressor</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Compress PNG</a></li>
+                            <li><a class="dropdown-item" href="#">Compress JPG</a></li>
+                        </ul>
+                    </li>
+                    <!-- Convert Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Convert</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Image Converter</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">PNG to JPG</a></li>
+                            <li><a class="dropdown-item" href="#">JPG to PNG</a></li>
+                            <li><a class="dropdown-item" href="#">WebP to JPG</a></li>
+                        </ul>
+                    </li>
+                    <!-- More Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Meme Generator</a></li>
+                            <li><a class="dropdown-item" href="#">Color Picker</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Rotate Image</a></li>
+                            <li><a class="dropdown-item" href="#">Flip Image</a></li>
+                            <li><a class="dropdown-item" href="#">Image Enlarger</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Application Section -->
+    <!-- The rest of the page is the same as the previous step -->
     <div class="container mt-5">
         <div class="row g-4">
-            <div class="col-lg-7">
-                <div class="upload-area" id="uploadArea">
-                    <h3>Select or Drag & Drop Image Here</h3>
-                    <p class="text-muted">File will be processed instantly</p>
-                    <button class="btn btn-primary mt-3">Select Image</button>
-                </div>
-            </div>
+            <div class="col-lg-7"><div class="upload-area" id="uploadArea"><h3>Select or Drag & Drop Image Here</h3><p class="text-muted">File will be processed instantly</p><button class="btn btn-primary mt-3">Select Image</button></div></div>
             <div class="col-lg-5">
                 <div class="options-card">
                     <input type="file" id="masterFileInput" class="d-none" accept="image/*">
                     <ul class="nav nav-tabs nav-fill mb-4" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation"><button class="nav-link active" id="dimension-tab" data-bs-toggle="tab" data-bs-target="#dimension-pane" type="button" role="tab">Resize by Dimension</button></li>
-                        <li class="nav-item" role="presentation"><button class="nav-link" id="filesize-tab" data-bs-toggle="tab" data-bs-target="#filesize-pane" type="button" role="tab">Reduce File Size</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link {% if active_tool == 'resizer' %}active{% endif %}" id="dimension-tab" data-bs-toggle="tab" data-bs-target="#dimension-pane" type="button" role="tab">Resize by Dimension</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link {% if active_tool == 'compressor' %}active{% endif %}" id="filesize-tab" data-bs-toggle="tab" data-bs-target="#filesize-pane" type="button" role="tab">Reduce File Size</button></li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="dimension-pane" role="tabpanel">
-                            <form id="dimensionForm" action="/" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="mode" value="dimension"><input type="file" name="image" class="dimension-file-input d-none">
-                                <div class="input-group mb-3"><select class="form-select" name="unit" id="unitSelector" style="max-width: 120px;"><option value="px">Pixels</option><option value="cm">cm</option><option value="mm">mm</option></select><input type="number" class="form-control" name="width" placeholder="Width" required step="any"><input type="number" class="form-control" name="height" placeholder="Height" required step="any"></div>
-                                <div id="dpi_input" class="mb-3" style="display:none;"><label for="dpi" class="form-label">DPI</label><input type="number" name="dpi" class="form-control" value="96"></div>
-                                <div class="mb-3"><label for="transform" class="form-label">Transform</label><select name="transform" class="form-select"><option value="none">None</option><option value="rotate_90">Rotate 90° Clockwise</option><option value="rotate_180">Rotate 180°</option><option value="rotate_270">Rotate 270°</option><option value="flip_horizontal">Flip Horizontal</option><option value="flip_vertical">Flip Vertical</option></select></div>
-                                <div class="row g-2 mb-3"><div class="col"><label for="format" class="form-label">Format</label><select name="format" id="formatSelector" class="form-select"><option value="jpeg">JPEG</option><option value="png">PNG</option><option value="webp">WEBP</option></select></div><div class="col" id="quality_input"><label for="quality" class="form-label">Quality: <span id="qualityValue">85</span></label><input type="range" name="quality" class="form-range" min="1" max="100" value="85" id="qualitySlider"></div></div>
-                                <div class="form-check mb-4"><input class="form-check-input" type="checkbox" name="aspect_ratio" value="true" id="aspectRatioCheck" checked><label class="form-check-label" for="aspectRatioCheck">Maintain Aspect Ratio</label></div>
-                                <div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Resize and Download</button></div>
-                            </form>
+                        <div class="tab-pane fade {% if active_tool == 'resizer' %}show active{% endif %}" id="dimension-pane" role="tabpanel">
+                            <form id="dimensionForm" action="/" method="post" enctype="multipart/form-data"><input type="hidden" name="mode" value="dimension"><input type="file" name="image" class="dimension-file-input d-none"><div class="input-group mb-3"><select class="form-select" name="unit" id="unitSelector" style="max-width: 120px;"><option value="px">Pixels</option><option value="cm">cm</option><option value="mm">mm</option></select><input type="number" class="form-control" name="width" placeholder="Width" required step="any"><input type="number" class="form-control" name="height" placeholder="Height" required step="any"></div><div id="dpi_input" class="mb-3" style="display:none;"><label for="dpi" class="form-label">DPI</label><input type="number" name="dpi" class="form-control" value="96"></div><div class="mb-3"><label for="transform" class="form-label">Transform</label><select name="transform" class="form-select"><option value="none">None</option><option value="rotate_90">Rotate 90° Clockwise</option><option value="rotate_180">Rotate 180°</option><option value="rotate_270">Rotate 270°</option><option value="flip_horizontal">Flip Horizontal</option><option value="flip_vertical">Flip Vertical</option></select></div><div class="row g-2 mb-3"><div class="col"><label for="format" class="form-label">Format</label><select name="format" id="formatSelector" class="form-select"><option value="jpeg">JPEG</option><option value="png">PNG</option><option value="webp">WEBP</option></select></div><div class="col" id="quality_input"><label for="quality" class="form-label">Quality: <span id="qualityValue">85</span></label><input type="range" name="quality" class="form-range" min="1" max="100" value="85" id="qualitySlider"></div></div><div class="form-check mb-4"><input class="form-check-input" type="checkbox" name="aspect_ratio" value="true" id="aspectRatioCheck" checked><label class="form-check-label" for="aspectRatioCheck">Maintain Aspect Ratio</label></div><div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Resize and Download</button></div></form>
                         </div>
-                        <div class="tab-pane fade" id="filesize-pane" role="tabpanel">
-                            <form id="filesizeForm" action="/" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="mode" value="filesize"><input type="file" name="image" class="filesize-file-input d-none">
-                                <p class="text-muted small">The tool will automatically reduce image quality to meet your target size. Most effective for JPEG/WEBP.</p>
-                                <div class="input-group mb-4"><input type="number" class="form-control" name="target_size" placeholder="e.g., 100" required><select class="form-select" name="size_unit" style="max-width: 100px;"><option value="KB">KB</option><option value="MB">MB</option></select></div>
-                                <div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Reduce and Download</button></div>
-                            </form>
+                        <div class="tab-pane fade {% if active_tool == 'compressor' %}show active{% endif %}" id="filesize-pane" role="tabpanel">
+                            <form id="filesizeForm" action="/" method="post" enctype="multipart/form-data"><input type="hidden" name="mode" value="filesize"><input type="file" name="image" class="filesize-file-input d-none"><p class="text-muted small">The tool will automatically reduce image quality to meet your target size. Most effective for JPEG/WEBP.</p><div class="input-group mb-4"><input type="number" class="form-control" name="target_size" placeholder="e.g., 100" required><select class="form-select" name="size_unit" style="max-width: 100px;"><option value="KB">KB</option><option value="MB">MB</option></select></div><div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Reduce and Download</button></div></form>
                         </div>
                     </div>
                 </div>
@@ -104,47 +109,15 @@
         </div>
     </div>
 
-    <!-- Features Section -->
-    <div id="features" class="container my-5 py-5">
-        <h2 class="text-center mb-5">Why Choose Our Tool?</h2>
-        <div class="row text-center g-4">
-            <div class="col-md-4"><i class="bi bi-gem feature-icon mb-3"></i><h4>Flexible Controls</h4><p>Resize images by pixels, cm, mm, or let our tool automatically compress your image to a target file size in KB or MB.</p></div>
-            <div class="col-md-4"><i class="bi bi-lightning-charge-fill feature-icon mb-3"></i><h4>Lightning Fast</h4><p>All processing happens instantly in your browser and on our powerful cloud backend. No waiting around.</p></div>
-            <div class="col-md-4"><i class="bi bi-lightbulb-fill feature-icon mb-3"></i><h4>Easy To Use</h4><p>Simply drag and drop your image, choose your options, and download. It's designed to be simple and intuitive.</p></div>
-            <div class="col-md-4"><i class="bi bi-images feature-icon mb-3"></i><h4>Multiple Formats</h4><p>Convert your images to the most popular web formats, including JPEG, PNG, and the modern WEBP for superior compression.</p></div>
-            <div class="col-md-4"><i class="bi bi-shield-check feature-icon mb-3"></i><h4>Privacy Guaranteed</h4><p>Your images are uploaded via a secure connection and are automatically processed without manual checks. Your privacy is respected.</p></div>
-            <div class="col-md-4"><i class="bi bi-patch-check-fill feature-icon mb-3"></i><h4>It's Free</h4><p>Our powerful image processing tool is completely free to use. No watermarks, no sign-ups, no hassle.</p></div>
-        </div>
-    </div>
+    <div id="features" class="container my-5 py-5"><h2 class="text-center mb-5">Why Choose Our Tool?</h2><div class="row text-center g-4"><div class="col-md-4"><i class="bi bi-gem feature-icon mb-3"></i><h4>Flexible Controls</h4><p>Resize images by pixels, cm, mm, or let our tool automatically compress your image to a target file size in KB or MB.</p></div><div class="col-md-4"><i class="bi bi-lightning-charge-fill feature-icon mb-3"></i><h4>Lightning Fast</h4><p>All processing happens instantly in your browser and on our powerful cloud backend. No waiting around.</p></div><div class="col-md-4"><i class="bi bi-lightbulb-fill feature-icon mb-3"></i><h4>Easy To Use</h4><p>Simply drag and drop your image, choose your options, and download. It's designed to be simple and intuitive.</p></div><div class="col-md-4"><i class="bi bi-images feature-icon mb-3"></i><h4>Multiple Formats</h4><p>Convert your images to the most popular web formats, including JPEG, PNG, and the modern WEBP for superior compression.</p></div><div class="col-md-4"><i class="bi bi-shield-check feature-icon mb-3"></i><h4>Privacy Guaranteed</h4><p>Your images are uploaded via a secure connection and are automatically processed without manual checks. Your privacy is respected.</p></div><div class="col-md-4"><i class="bi bi-patch-check-fill feature-icon mb-3"></i><h4>It's Free</h4><p>Our powerful image processing tool is completely free to use. No watermarks, no sign-ups, no hassle.</p></div></div></div>
+    <div id="how-it-works" class="bg-white py-5"><div class="container"><h2 class="text-center mb-5">How It Works in 3 Simple Steps</h2><div class="row align-items-center"><div class="col-md-6 text-center"><i class="bi bi-image" style="font-size: 6rem; color: #6c757d;"></i><i class="bi bi-arrow-right mx-3" style="font-size: 3rem; color: #6c757d;"></i><i class="bi bi-aspect-ratio" style="font-size: 6rem; color: #0d6efd;"></i></div><div class="col-md-6"><ol class="list-group list-group-numbered"><li class="list-group-item border-0 fs-5"><b>Select an Image:</b> Drag and drop your image onto the upload area, or click to select a file from your device.</li><li class="list-group-item border-0 fs-5"><b>Choose Your Options:</b> Select a tab. Either enter your desired dimensions (like 100x100 pixels) or a target file size (like 200 KB).</li><li class="list-group-item border-0 fs-5"><b>Download:</b> Click the "Resize and Download" button. Your new image will be ready instantly.</li></ol></div></div></div></div>
+    <footer class="mt-5 py-4 border-top"><div class="container d-flex flex-wrap justify-content-between align-items-center"><p class="col-md-4 mb-0 text-muted">&copy; <span id="currentYear"></span> D_Pro Image Tool. All rights reserved.</p><ul class="nav col-md-8 justify-content-end"><li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About Us</a></li><li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Privacy Policy</a></li><li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Terms of Use</a></li><li class="nav-item"><a href="#" class="nav-link px-2 text-muted"><i class="bi bi-globe"></i> English</a></li></ul></div></footer>
 
-    <!-- How It Works Section -->
-    <div id="how-it-works" class="bg-white py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">How It Works in 3 Simple Steps</h2>
-            <div class="row align-items-center"><div class="col-md-6 text-center"><i class="bi bi-image" style="font-size: 6rem; color: #6c757d;"></i><i class="bi bi-arrow-right mx-3" style="font-size: 3rem; color: #6c757d;"></i><i class="bi bi-aspect-ratio" style="font-size: 6rem; color: #0d6efd;"></i></div><div class="col-md-6"><ol class="list-group list-group-numbered"><li class="list-group-item border-0 fs-5"><b>Select an Image:</b> Drag and drop your image onto the upload area, or click to select a file from your device.</li><li class="list-group-item border-0 fs-5"><b>Choose Your Options:</b> Select a tab. Either enter your desired dimensions (like 100x100 pixels) or a target file size (like 200 KB).</li><li class="list-group-item border-0 fs-5"><b>Download:</b> Click the "Resize and Download" button. Your new image will be ready instantly.</li></ol></div></div>
-        </div>
-    </div>
-    
-    <!-- =================== FOOTER (NEW) =================== -->
-    <footer class="mt-5 py-4 border-top">
-        <div class="container d-flex flex-wrap justify-content-between align-items-center">
-            <p class="col-md-4 mb-0 text-muted">&copy; <span id="currentYear"></span> D_Pro Image Tool. All rights reserved.</p>
-            <ul class="nav col-md-8 justify-content-end">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About Us</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Privacy Policy</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Terms of Use</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted"><i class="bi bi-globe"></i> English</a></li>
-            </ul>
-        </div>
-    </footer>
-
-    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Update the year in the footer automatically
+        const activeFormat = "{{ active_format or '' }}";
+        document.addEventListener('DOMContentLoaded', function() { if (activeFormat) { const formatSelector = document.getElementById('formatSelector'); if (formatSelector) { formatSelector.value = activeFormat; formatSelector.disabled = true; formatSelector.dispatchEvent(new Event('change')); } } });
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // The rest of the script is unchanged from the previous step
         const unitSelector = document.getElementById('unitSelector');
         const dpiInput = document.getElementById('dpi_input');
         const formatSelector = document.getElementById('formatSelector');
@@ -158,34 +131,17 @@
         const masterFileInput = document.getElementById('masterFileInput');
         const dimensionFileInput = document.querySelector('.dimension-file-input');
         const filesizeFileInput = document.querySelector('.filesize-file-input');
-        function handleFile(file) {
-            if (file && file.type.startsWith('image/')) {
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                dimensionFileInput.files = dataTransfer.files;
-                filesizeFileInput.files = dataTransfer.files;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    uploadArea.innerHTML = '';
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.maxWidth = '100%';
-                    img.style.maxHeight = '280px';
-                    img.style.objectFit = 'contain';
-                    uploadArea.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            } else { alert('Please drop an image file (e.g., JPG, PNG).'); }
-        }
+        function handleFile(file) { if (file && file.type.startsWith('image/')) { const dataTransfer = new DataTransfer(); dataTransfer.items.add(file); dimensionFileInput.files = dataTransfer.files; filesizeFileInput.files = dataTransfer.files; const reader = new FileReader(); reader.onload = function(e) { uploadArea.innerHTML = ''; const img = document.createElement('img'); img.src = e.target.result; img.style.maxWidth = '100%'; img.style.maxHeight = '280px'; img.style.objectFit = 'contain'; uploadArea.appendChild(img); }; reader.readAsDataURL(file); } else { alert('Please drop an image file (e.g., JPG, PNG).'); } }
         uploadArea.addEventListener('click', () => masterFileInput.click());
         masterFileInput.addEventListener('change', () => { if (masterFileInput.files.length) handleFile(masterFileInput.files[0]); });
         uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor = '#28a745'; });
         uploadArea.addEventListener('dragleave', (e) => { e.preventDefault(); uploadArea.style.borderColor = '#0d6efd'; });
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.style.borderColor = '#0d6efd';
-            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-        });
+        uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.style.borderColor = '#0d6efd'; if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+        const dimensionForm = document.getElementById('dimensionForm');
+        const filesizeForm = document.getElementById('filesizeForm');
+        async function handleFormSubmit(event) { event.preventDefault(); const form = event.target; const submitButton = form.querySelector('button[type="submit"]'); const originalButtonText = submitButton.innerHTML; submitButton.disabled = true; submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`; try { const formData = new FormData(form); const response = await fetch('/', { method: 'POST', body: formData, }); const result = await response.json(); if (response.ok && result.success) { const link = document.createElement('a'); link.href = result.download_url; link.download = result.download_url.split('/').pop(); document.body.appendChild(link); link.click(); document.body.removeChild(link); } else { alert('Error: ' + (result.error || 'Something went wrong.')); } } catch (error) { console.error('Submission error:', error); alert('A network error occurred. Please try again.'); } finally { submitButton.disabled = false; submitButton.innerHTML = originalButtonText; } }
+        dimensionForm.addEventListener('submit', handleFormSubmit);
+        filesizeForm.addEventListener('submit', handleFormSubmit);
     </script>
 </body>
 </html>

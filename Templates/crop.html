@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Cropper - D_Pro Image Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+    <style>
+        .cropper-container { max-width: 100%; }
+        .img-container { max-height: 70vh; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">D_Pro Image Tool</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="main-nav">
+                 <ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="/">Back to Main Tool</a></li></ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Image Cropper</h2>
+        <div id="uploadContainer" class="text-center">
+            <div class="d-inline-block p-5 border rounded-3" style="cursor: pointer;">
+                <i class="bi bi-upload" style="font-size: 3rem;"></i>
+                <h3>Click to Upload Image</h3>
+            </div>
+             <input type="file" id="imageInput" class="d-none" accept="image/*">
+        </div>
+        <div id="cropperContainer" class="d-none">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="img-container"><img id="imageToCrop" src=""></div>
+                </div>
+                <div class="col-md-4">
+                    <h4>Crop Options</h4>
+                    <form id="cropForm">
+                        <input type="hidden" name="crop_x" id="cropX"><input type="hidden" name="crop_y" id="cropY"><input type="hidden" name="crop_width" id="cropWidth"><input type="hidden" name="crop_height" id="cropHeight">
+                        <p>Drag and resize the box over the image to select your crop area.</p>
+                        <div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Crop & Download</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    
+    <!-- SCRIPT BLOCK IS NOW FULLY UPDATED -->
+    <script>
+        const uploadContainer = document.getElementById('uploadContainer');
+        const imageInput = document.getElementById('imageInput');
+        const cropperContainer = document.getElementById('cropperContainer');
+        const imageToCrop = document.getElementById('imageToCrop');
+        const cropForm = document.getElementById('cropForm');
+        let cropper;
+
+        uploadContainer.addEventListener('click', () => imageInput.click());
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imageToCrop.src = event.target.result;
+                    uploadContainer.classList.add('d-none');
+                    cropperContainer.classList.remove('d-none');
+                    if (cropper) cropper.destroy(); // Destroy previous instance if it exists
+                    cropper = new Cropper(imageToCrop, {
+                        viewMode: 1,
+                        crop(event) {
+                            document.getElementById('cropX').value = Math.round(event.detail.x);
+                            document.getElementById('cropY').value = Math.round(event.detail.y);
+                            document.getElementById('cropWidth').value = Math.round(event.detail.width);
+                            document.getElementById('cropHeight').value = Math.round(event.detail.height);
+                        },
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // THIS SUBMIT HANDLER IS NOW UPDATED
+        cropForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            
+            if (!imageInput.files[0]) {
+                alert('Please select an image first!');
+                return;
+            }
+
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cropping...`;
+
+            // Prepare form data for AJAX
+            const formData = new FormData(cropForm);
+            formData.append('image', imageInput.files[0]); // Add the original image file
+
+            try {
+                const response = await fetch('/crop', {
+                    method: 'POST',
+                    body: formData,
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    const link = document.createElement('a');
+                    link.href = result.download_url;
+                    link.download = result.download_url.split('/').pop();
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert('Error: ' + (result.error || 'Something went wrong.'));
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('A network error occurred. Please try again.');
+            } finally {
+                // Reset button
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
+        });
+    </script>
+</body>
+</html>
