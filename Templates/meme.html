@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator - D_Pro Image Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .preview-area { position: relative; min-height: 200px; background-color: #f8f9fa; border: 2px dashed #dee2e6; display: flex; align-items: center; justify-content: center; }
+        .preview-image { max-width: 100%; max-height: 50vh; }
+        .meme-text { position: absolute; width: 90%; left: 5%; font-family: Impact, sans-serif; font-size: 2.5rem; color: white; text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 5px #000; text-align: center; text-transform: uppercase; }
+        .top-text { top: 5%; }
+        .bottom-text { bottom: 5%; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container"><a class="navbar-brand fw-bold" href="/">D_Pro Image Tool</a><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="/">Back to Main Tool</a></li></ul></div>
+    </nav>
+    <div class="container mt-5">
+        <div class="row g-4">
+            <div class="col-md-7">
+                <h2 class="mb-4">Live Preview</h2>
+                <div id="previewArea" class="preview-area"><p class="text-muted">Upload an image to start</p></div>
+            </div>
+            <div class="col-md-5">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Meme Options</h4>
+                        <form id="memeForm">
+                            <div class="mb-3"><label for="imageInput" class="form-label">1. Upload Image</label><input class="form-control" type="file" id="imageInput" accept="image/*" required></div>
+                            <div class="mb-3"><label for="topTextInput" class="form-label">2. Top Text</label><input type="text" class="form-control" id="topTextInput" name="top_text" placeholder="Text at the top"></div>
+                            <div class="mb-3"><label for="bottomTextInput" class="form-label">3. Bottom Text</label><input type="text" class="form-control" id="bottomTextInput" name="bottom_text" placeholder="Text at the bottom"></div>
+                            <div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Generate Meme</button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const previewArea = document.getElementById('previewArea');
+        const topTextInput = document.getElementById('topTextInput');
+        const bottomTextInput = document.getElementById('bottomTextInput');
+        const memeForm = document.getElementById('memeForm');
+
+        function updatePreview() {
+            previewArea.innerHTML = '';
+            const file = imageInput.files[0];
+            if (!file) { previewArea.innerHTML = '<p class="text-muted">Upload an image to start</p>'; return; }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('preview-image');
+                previewArea.appendChild(img);
+                const topTextDiv = document.createElement('div');
+                topTextDiv.classList.add('meme-text', 'top-text');
+                topTextDiv.innerText = topTextInput.value;
+                previewArea.appendChild(topTextDiv);
+                const bottomTextDiv = document.createElement('div');
+                bottomTextDiv.classList.add('meme-text', 'bottom-text');
+                bottomTextDiv.innerText = bottomTextInput.value;
+                previewArea.appendChild(bottomTextDiv);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        imageInput.addEventListener('change', updatePreview);
+        topTextInput.addEventListener('input', updatePreview);
+        bottomTextInput.addEventListener('input', updatePreview);
+
+        // THIS SUBMIT HANDLER IS NOW FULLY UPDATED
+        memeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+
+            if (imageInput.files.length === 0) {
+                alert('Please upload an image first.');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...`;
+
+            const formData = new FormData(memeForm);
+            formData.append('image', imageInput.files[0]);
+
+            try {
+                const response = await fetch('/meme', {
+                    method: 'POST',
+                    body: formData,
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    const link = document.createElement('a');
+                    link.href = result.download_url;
+                    link.download = result.download_url.split('/').pop();
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert('Error: ' + (result.error || 'Something went wrong.'));
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('A network error occurred. Please try again.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
+        });
+    </script>
+</body>
+</html>

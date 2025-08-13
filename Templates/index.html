@@ -35,25 +35,55 @@
                          </ul>
                         </li>
 
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Crop</a>
-                        <ul class="dropdown-menu"><li><a class="dropdown-item" href="/crop">Crop Image</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="#">Crop PNG</a></li><li><a class="dropdown-item" href="#">Crop JPG</a></li><li><a class="dropdown-item" href="#">Crop WebP</a></li></ul>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Crop</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/crop">Crop Image</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/crop">Crop PNG</a></li>
+                        <li><a class="dropdown-item" href="/crop">Crop JPG</a></li>
+                        <li><a class="dropdown-item" href="/crop">Crop WebP</a></li>
+                    </ul>
+                </li>
+
+                    <!-- Inside templates/index.html -->
+                    <!-- COMPRESS DROPDOWN IS NOW UPDATED -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Compress</a>
+                        <ul class="dropdown-menu">
+                            <!-- This link opens the 'Reduce File Size' tab on the main page -->
+                            <li><a class="dropdown-item" href="/?tool=compressor">Image Compressor</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <!-- For now, all specific compression links will also go to our 'Reduce File Size' tool -->
+                            <li><a class="dropdown-item" href="/?tool=compressor">Compress PNG</a></li>
+                            <li><a class="dropdown-item" href="/?tool=compressor">Compress JPG</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Compress</a>
-                        <ul class="dropdown-menu"><li><a class="dropdown-item" href="/?tool=compressor">Image Compressor</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="#">Compress PNG</a></li><li><a class="dropdown-item" href="#">Compress JPG</a></li></ul>
-                    </li>
+
+                    <!-- Inside templates/index.html -->
+                    <!-- CONVERT DROPDOWN (FULLY CORRECTED) -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Convert</a>
                         <ul class="dropdown-menu">
-                            <!-- THIS LINK IS NOW UPDATED -->
                             <li><a class="dropdown-item" href="/convert">Image Converter</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">PNG to JPG</a></li>
-                            <li><a class="dropdown-item" href="#">JPG to PNG</a></li>
-                            <li><a class="dropdown-item" href="#">WebP to JPG</a></li>
+                            <!-- THESE LINKS ARE NOW CORRECTED -->
+                            <li><a class="dropdown-item" href="/convert?output=jpeg">PNG to JPG</a></li>
+                            <li><a class="dropdown-item" href="/convert?output=png">JPG to PNG</a></li>
+                            <li><a class="dropdown-item" href="/convert?output=jpeg">WebP to JPG</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
-                        <ul class="dropdown-menu"><li><a class="dropdown-item" href="#">Meme Generator</a></li><li><a class="dropdown-item" href="#">Color Picker</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="#">Rotate Image</a></li><li><a class="dropdown-item" href="#">Flip Image</a></li><li><a class="dropdown-item" href="#">Image Enlarger</a></li></ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/meme">Meme Generator</a></li>
+                            <li><a class="dropdown-item" href="#">Color Picker</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <!-- THESE TWO LINKS ARE NOW UPDATED -->
+                            <li><a class="dropdown-item" href="/transform">Rotate Image</a></li>
+                            <li><a class="dropdown-item" href="/transform">Flip Image</a></li>
+                            <li><a class="dropdown-item" href="#">Image Enlarger</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
