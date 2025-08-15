@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulk Image Resizer - D_Pro Image Tool</title>
+    <title>Bulk Image Resizer - Pro Image Tool</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        .preview-area { display: flex; flex-wrap: wrap; gap: 1rem; padding: 1rem; border: 1px solid #dee2e6; border-radius: .375rem; min-height: 150px; background-color: #f8f9fa; }
-        .preview-thumbnail { width: 100px; height: 100px; object-fit: cover; border-radius: .25rem; border: 1px solid #ccc; }
+        body { background-color: var(--bs-tertiary-bg); }
+        .card { background-color: var(--bs-body-bg); }
+        .preview-area { display: flex; flex-wrap: wrap; gap: 1rem; padding: 1rem; border: 1px solid var(--bs-border-color); border-radius: .375rem; min-height: 150px; background-color: var(--bs-secondary-bg); }
+        .preview-thumbnail { width: 100px; height: 100px; object-fit: cover; border-radius: .25rem; border: 1px solid var(--bs-border-color); }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="/">D_Pro Image Tool</a>
+            <a class="navbar-brand fw-bold" href="/">Pro Image Tool</a>
             <ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="/">Back to Main Tool</a></li></ul>
         </div>
     </nav>
@@ -22,40 +24,83 @@
         <div class="row g-4">
             <div class="col-lg-7">
                 <h2 class="mb-4">Bulk Image Resizer</h2>
-                <div class="mb-3"><label for="imageInputs" class="form-label">Select multiple images to resize:</label><input class="form-control" type="file" id="imageInputs" accept="image/*" multiple></div>
+                <div id="alertPlaceholder"></div>
+                <div class="mb-3">
+                    <label for="imageInputs" class="form-label">Select multiple images to resize:</label>
+                    <input class="form-control" type="file" id="imageInputs" accept="image/*" multiple>
+                </div>
                 <h5>Image Previews:</h5>
                 <div class="preview-area" id="previewArea"><p class="text-muted">Your selected images will appear here...</p></div>
             </div>
             <div class="col-lg-5">
-                <div class="options-card">
+                <div class="card shadow-sm p-4">
                     <h4>Resize Options (Applied to All Images)</h4>
                     <form id="bulkResizeForm">
                         <div class="input-group mb-3"><select class="form-select" name="unit" style="max-width: 120px;"><option value="px">Pixels</option><option value="cm">cm</option><option value="mm">mm</option></select><input type="number" class="form-control" name="width" placeholder="Width" required step="any"><input type="number" class="form-control" name="height" placeholder="Height" required step="any"></div>
                         <div class="mb-3"><label for="format" class="form-label">Output Format</label><select name="format" id="formatSelector" class="form-select"><option value="jpeg">JPEG</option><option value="png">PNG</option><option value="webp">WEBP</option></select></div>
                         <div class="mb-3" id="quality_input"><label for="quality" class="form-label">Quality (JPEG/WEBP): <span id="qualityValue">85</span></label><input type="range" name="quality" class="form-range" min="1" max="100" value="85" id="qualitySlider"></div>
                         <div class="form-check mb-4"><input class="form-check-input" type="checkbox" name="aspect_ratio" value="true" checked><label class="form-check-label">Maintain Aspect Ratio</label></div>
-                        <div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Resize All & Download .ZIP</button></div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">Resize All & Download .ZIP</button>
+                            <button type="button" id="resetButton" class="btn btn-outline-danger">Reset Images</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    
+    <footer class="mt-5 py-4 border-top bg-body-tertiary">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+            <div class="col-md-5 text-center text-md-start mb-2 mb-md-0">
+                <p class="mb-0 text-muted">&copy; <span id="currentYear"></span> Pro Image Tool v.1.0.0. All rights reserved.</p>
+            </div>
+            <div class="col-md-7 d-flex justify-content-center justify-content-md-end align-items-center">
+                <ul class="nav">
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About Us</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Privacy</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Terms of Use</a></li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-link nav-link px-2 text-muted dropdown-toggle" type="button" id="bd-theme" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg class="bi my-1 theme-icon-active" width="16" height="16" fill="currentColor"><use href="#circle-half"></use></svg>
+                        <span id="bd-theme-text" class="d-none d-lg-inline">Theme</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"><svg class="bi me-2 opacity-50 theme-icon" width="16" height="16" fill="currentColor"><use href="#sun-fill"></use></svg>Light</button></li>
+                        <li><button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"><svg class="bi me-2 opacity-50 theme-icon" width="16" height="16" fill="currentColor"><use href="#moon-stars-fill"></use></svg>Dark</button></li>
+                        <li><button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"><svg class="bi me-2 opacity-50 theme-icon" width="16" height="16" fill="currentColor"><use href="#circle-half"></use></svg>System</button></li>
+                    </ul>
+                </div>
+                <ul class="nav"><li class="nav-item"><a href="#" class="nav-link ps-2 text-muted"><i class="bi bi-globe me-1"></i> English</a></li></ul>
+            </div>
+        </div>
+    </footer>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="circle-half" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/></symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/><path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162h1.234a.217.217 0 0 1 .153.372l-.998.95c-.05.047-.072.121-.053.184l.393 1.157a.217.217 0 0 1-.328.245l-1.013-.746a.217.217 0 0 0-.254 0l-1.013.746a.217.217 0 0 1-.328-.245l.393-1.157a.217.217 0 0 0-.053-.184l-.998-.95a.217.217 0 0 1 .153-.372h1.234l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258c-.346.115-.617.386-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a.752.752 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774.258c.346-.115.617.386.732.732L13.863.1z"/></symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707z"/></symbol>
+    </svg>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
     <script>
         const imageInputs = document.getElementById('imageInputs');
         const previewArea = document.getElementById('previewArea');
         const bulkResizeForm = document.getElementById('bulkResizeForm');
         const formatSelector = document.getElementById('formatSelector');
         const qualityInput = document.getElementById('quality_input');
-        
+        const qualitySlider = document.getElementById('qualitySlider');
+        const qualityValue = document.getElementById('qualityValue');
+        const alertPlaceholder = document.getElementById('alertPlaceholder');
+        const resetButton = document.getElementById('resetButton');
+        const showAlert = (message, type = 'danger') => { alertPlaceholder.innerHTML = `<div class="alert alert-${type} alert-dismissible" role="alert"><div>${message}</div><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`; };
+
         formatSelector.addEventListener('change', () => { qualityInput.style.display = (formatSelector.value === 'jpeg' || formatSelector.value === 'webp') ? 'block' : 'none'; });
+        qualitySlider.addEventListener('input', () => { qualityValue.textContent = qualitySlider.value; });
         
         imageInputs.addEventListener('change', () => {
             previewArea.innerHTML = '';
-            if (!imageInputs.files.length) {
-                previewArea.innerHTML = '<p class="text-muted">Your selected images will appear here...</p>';
-                return;
-            }
+            if (!imageInputs.files.length) { previewArea.innerHTML = '<p class="text-muted">Your selected images will appear here...</p>'; return; }
             for (const file of imageInputs.files) {
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
@@ -65,50 +110,36 @@
             }
         });
 
-        // THIS SUBMIT HANDLER IS NOW FULLY UPDATED
+        resetButton.addEventListener('click', () => {
+            bulkResizeForm.reset();
+            imageInputs.value = '';
+            previewArea.innerHTML = '<p class="text-muted">Your selected images will appear here...</p>';
+            alertPlaceholder.innerHTML = '';
+            formatSelector.dispatchEvent(new Event('change'));
+        });
+
         bulkResizeForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            alertPlaceholder.innerHTML = '';
             const submitButton = e.target.querySelector('button[type="submit"]');
             const originalButtonText = submitButton.innerHTML;
-
-            if (imageInputs.files.length === 0) {
-                alert('Please select at least one image to resize.');
-                return;
-            }
-
+            if (imageInputs.files.length === 0) { showAlert('Please select at least one image to resize.'); return; }
             submitButton.disabled = true;
-            submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
-
-            // Use FormData to send both form options and the list of files
+            submitButton.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Processing...`;
             const formData = new FormData(bulkResizeForm);
-            for (const file of imageInputs.files) {
-                // The 'images[]' name is important for Flask's getlist()
-                formData.append('images[]', file);
-            }
-            
+            for (const file of imageInputs.files) { formData.append('images[]', file); }
             try {
-                const response = await fetch('/bulk-resize', {
-                    method: 'POST',
-                    body: formData,
-                });
+                const response = await fetch('/bulk-resize', { method: 'POST', body: formData });
                 const result = await response.json();
                 if (response.ok && result.success) {
                     const link = document.createElement('a');
                     link.href = result.download_url;
-                    // The download attribute is handled by the backend now
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
-                } else {
-                    alert('Error: ' + (result.error || 'Something went wrong.'));
-                }
-            } catch (error) {
-                console.error('Submission error:', error);
-                alert('A network error occurred. Please try again.');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonText;
-            }
+                } else { showAlert(result.error || 'Something went wrong.'); }
+            } catch (error) { console.error('Submission error:', error); showAlert('A network error occurred.');
+            } finally { submitButton.disabled = false; submitButton.innerHTML = originalButtonText; }
         });
     </script>
 </body>

@@ -1,66 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Cropper - D_Pro Image Tool</title>
+    <title>Image Cropper - Pro Image Tool</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
     <style>
-        .cropper-container { max-width: 100%; }
-        .img-container { max-height: 70vh; margin-bottom: 1rem; }
+        body { background-color: var(--bs-tertiary-bg); }
+        .img-container { max-height: 70vh; margin-bottom: 1rem; background-color: var(--bs-body-bg); }
+        .card { background-color: var(--bs-body-bg); }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="/">D_Pro Image Tool</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="main-nav">
-                 <ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="/">Back to Main Tool</a></li></ul>
-            </div>
+            <a class="navbar-brand fw-bold" href="/">Pro Image Tool</a>
+            <ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="/">Back to Main Tool</a></li></ul>
         </div>
     </nav>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Image Cropper</h2>
+        <div id="alertPlaceholder"></div>
         <div id="uploadContainer" class="text-center">
-            <div class="d-inline-block p-5 border rounded-3" style="cursor: pointer;">
+            <div class="d-inline-block p-5 border rounded-3" style="cursor: pointer; background-color: var(--bs-body-bg);">
                 <i class="bi bi-upload" style="font-size: 3rem;"></i>
                 <h3>Click to Upload Image</h3>
             </div>
-             <input type="file" id="imageInput" class="d-none" accept="image/*">
+            <input type="file" id="imageInput" class="d-none" accept="image/*">
         </div>
         <div id="cropperContainer" class="d-none">
             <div class="row">
                 <div class="col-md-8">
-                    <div class="img-container"><img id="imageToCrop" src=""></div>
+                    <div class="img-container">
+                        <img id="imageToCrop" src="" style="max-width: 100%;">
+                    </div>
                 </div>
                 <div class="col-md-4">
-                    <h4>Crop Options</h4>
-                    <form id="cropForm">
-                        <input type="hidden" name="crop_x" id="cropX"><input type="hidden" name="crop_y" id="cropY"><input type="hidden" name="crop_width" id="cropWidth"><input type="hidden" name="crop_height" id="cropHeight">
-                        <p>Drag and resize the box over the image to select your crop area.</p>
-                        <div class="d-grid"><button type="submit" class="btn btn-success btn-lg">Crop & Download</button></div>
-                    </form>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title">Crop Options</h4>
+                            <form id="cropForm">
+                                <input type="hidden" name="crop_x" id="cropX"><input type="hidden" name="crop_y" id="cropY"><input type="hidden" name="crop_width" id="cropWidth"><input type="hidden" name="crop_height" id="cropHeight">
+                                <p>Drag and resize the box over the image to select your crop area.</p>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-success btn-lg">Crop & Download</button>
+                                    <button type="button" id="resetButton" class="btn btn-outline-danger">Reset Image</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     
-    <!-- SCRIPT BLOCK IS NOW FULLY UPDATED -->
+    <footer class="mt-5 py-4 border-top bg-body-tertiary">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+            <div class="col-md-5 text-center text-md-start mb-2 mb-md-0">
+                <p class="mb-0 text-muted">&copy; <span id="currentYear"></span> Pro Image Tool v.1.0.0. All rights reserved.</p>
+            </div>
+            <div class="col-md-7 d-flex justify-content-center justify-content-md-end align-items-center">
+                <ul class="nav">
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About Us</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Privacy</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Terms of Use</a></li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-link nav-link px-2 text-muted dropdown-toggle" type="button" id="bd-theme" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg class="bi my-1 theme-icon-active" width="16" height="16" fill="currentColor"><use href="#circle-half"></use></svg>
+                        <span id="bd-theme-text" class="d-none d-lg-inline">Theme</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"><svg class="bi me-2 opacity-50 theme-icon" width="16" height="16" fill="currentColor"><use href="#sun-fill"></use></svg>Light</button></li>
+                        <li><button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"><svg class="bi me-2 opacity-50 theme-icon" width="16" height="16" fill="currentColor"><use href="#moon-stars-fill"></use></svg>Dark</button></li>
+                        <li><button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"><svg class="bi me-2 opacity-50 theme-icon" width="16" height="16" fill="currentColor"><use href="#circle-half"></use></svg>System</button></li>
+                    </ul>
+                </div>
+                <ul class="nav"><li class="nav-item"><a href="#" class="nav-link ps-2 text-muted"><i class="bi bi-globe me-1"></i> English</a></li></ul>
+            </div>
+        </div>
+    </footer>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="circle-half" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/></symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/><path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162h1.234a.217.217 0 0 1 .153.372l-.998.95c-.05.047-.072.121-.053.184l.393 1.157a.217.217 0 0 1-.328.245l-1.013-.746a.217.217 0 0 0-.254 0l-1.013.746a.217.217 0 0 1-.328-.245l.393-1.157a.217.217 0 0 0-.053-.184l-.998-.95a.217.217 0 0 1 .153-.372h1.234l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258c-.346.115-.617.386-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a.752.752 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774.258c.346-.115.617.386.732.732L13.863.1z"/></symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707z"/></symbol>
+    </svg>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <script>
         const uploadContainer = document.getElementById('uploadContainer');
         const imageInput = document.getElementById('imageInput');
         const cropperContainer = document.getElementById('cropperContainer');
         const imageToCrop = document.getElementById('imageToCrop');
         const cropForm = document.getElementById('cropForm');
+        const resetButton = document.getElementById('resetButton');
+        const alertPlaceholder = document.getElementById('alertPlaceholder');
         let cropper;
 
-        uploadContainer.addEventListener('click', () => imageInput.click());
+        const showAlert = (message, type = 'danger') => { alertPlaceholder.innerHTML = `<div class="alert alert-${type} alert-dismissible" role="alert"><div>${message}</div><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`; };
 
+        uploadContainer.addEventListener('click', () => imageInput.click());
         imageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -69,7 +111,7 @@
                     imageToCrop.src = event.target.result;
                     uploadContainer.classList.add('d-none');
                     cropperContainer.classList.remove('d-none');
-                    if (cropper) cropper.destroy(); // Destroy previous instance if it exists
+                    if (cropper) cropper.destroy();
                     cropper = new Cropper(imageToCrop, {
                         viewMode: 1,
                         crop(event) {
@@ -83,31 +125,27 @@
                 reader.readAsDataURL(file);
             }
         });
+        
+        resetButton.addEventListener('click', () => {
+            imageInput.value = '';
+            if (cropper) cropper.destroy();
+            cropperContainer.classList.add('d-none');
+            uploadContainer.classList.remove('d-none');
+            alertPlaceholder.innerHTML = '';
+        });
 
-        // THIS SUBMIT HANDLER IS NOW UPDATED
         cropForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            alertPlaceholder.innerHTML = '';
             const submitButton = e.target.querySelector('button[type="submit"]');
             const originalButtonText = submitButton.innerHTML;
-            
-            if (!imageInput.files[0]) {
-                alert('Please select an image first!');
-                return;
-            }
-
-            // Show loading state
+            if (!imageInput.files[0]) { showAlert('Please select an image first!'); return; }
             submitButton.disabled = true;
-            submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cropping...`;
-
-            // Prepare form data for AJAX
+            submitButton.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Cropping...`;
             const formData = new FormData(cropForm);
-            formData.append('image', imageInput.files[0]); // Add the original image file
-
+            formData.append('image', imageInput.files[0]);
             try {
-                const response = await fetch('/crop', {
-                    method: 'POST',
-                    body: formData,
-                });
+                const response = await fetch('/crop', { method: 'POST', body: formData });
                 const result = await response.json();
                 if (response.ok && result.success) {
                     const link = document.createElement('a');
@@ -116,17 +154,9 @@
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
-                } else {
-                    alert('Error: ' + (result.error || 'Something went wrong.'));
-                }
-            } catch (error) {
-                console.error('Submission error:', error);
-                alert('A network error occurred. Please try again.');
-            } finally {
-                // Reset button
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonText;
-            }
+                } else { showAlert(result.error || 'Something went wrong.'); }
+            } catch (error) { console.error('Submission error:', error); showAlert('A network error occurred.');
+            } finally { submitButton.disabled = false; submitButton.innerHTML = originalButtonText; }
         });
     </script>
 </body>
